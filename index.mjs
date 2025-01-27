@@ -22,8 +22,16 @@ const mockusers = [
 app.get("/", (req, res) => {
   res.send("Hello world!");
 });
+
+// http://localhost:8080/api/users?filter=username&value=ch api request
 app.get("/api/users", (req, res) => {
-  res.send(mockusers);
+  const {
+    query: { filter, value },
+  } = req;
+  if (!filter && !value) return res.send(mockusers);
+  if (filter && value)
+    return res.send(mockusers.filter((user) => user[filter].includes(value)));
+  return res.send(mockusers);
 });
 
 app.get("/api/users/:id", (req, res) => {
