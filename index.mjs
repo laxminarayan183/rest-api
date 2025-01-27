@@ -82,6 +82,18 @@ app.patch("/api/users/:id", (req, res) => {
   return res.sendStatus(200);
 });
 
+// delete request
+app.delete("/api/users/:id", (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  const parseId = parseInt(id);
+  if (isNaN(parseId)) return res.sendStatus(400);
+  const findUserIndex = mockusers.findIndex((user) => user.id === parseId);
+  if (findUserIndex === -1) return res.sendStatus(404);
+  mockusers.splice(findUserIndex, 1);
+  return res.sendStatus(200);
+});
 app.listen(8080, () => {
   console.log("Server listening on 8080");
 });
