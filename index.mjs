@@ -53,6 +53,20 @@ app.post("/api/users", (req, res) => {
   return res.status(201).send(newUSer);
 });
 
+// put requests
+app.put("/api/users/:id", (req, res) => {
+  const {
+    body,
+    params: { id },
+  } = req;
+  const parseId = parseInt(id);
+  if (isNaN(parseId)) return res.sendStatus(400);
+  const findUserIndex = mockusers.findIndex((user) => user.id === parseId);
+  if (findUserIndex === -1) return res.sendStatus(404);
+  mockusers[findUserIndex] = { id: parseId, ...body };
+  return res.sendStatus(200);
+});
+
 app.listen(8080, () => {
   console.log("Server listening on 8080");
 });
