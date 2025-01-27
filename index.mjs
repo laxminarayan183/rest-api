@@ -1,5 +1,6 @@
 import express from "express";
 const app = express();
+app.use(express.json());
 
 const mockusers = [
   {
@@ -41,6 +42,15 @@ app.get("/api/users/:id", (req, res) => {
   const findUser = mockusers.find((user) => user.id === parseId);
   if (!findUser) return res.status(404).send({ msg: "User not found" });
   return res.send(findUser);
+});
+
+// post a new user
+app.post("/api/users", (req, res) => {
+  console.log(req.body);
+  const { body } = req;
+  const newUSer = { id: mockusers[mockusers.length - 1].id + 1, ...body };
+  mockusers.push(newUSer);
+  return res.status(201).send(newUSer);
 });
 
 app.listen(8080, () => {
